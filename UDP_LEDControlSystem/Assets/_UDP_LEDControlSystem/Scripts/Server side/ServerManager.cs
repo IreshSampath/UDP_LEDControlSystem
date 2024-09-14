@@ -6,18 +6,23 @@ namespace GAG.UDPLEDControlSystem
 {
     public class ServerManager : MonoBehaviour
     {
+        [SerializeField] ServerUIManager _serverUIManager;
+
         NetworkDriver _driver;
         NativeList<NetworkConnection> _connections;
 
         void Start()
         {
+            _serverUIManager.PrintConsole("I'm Server");
+
             _driver = NetworkDriver.Create();
             _connections = new NativeList<NetworkConnection>(16, Allocator.Persistent);
 
             var endpoint = NetworkEndpoint.AnyIpv4.WithPort(7777);
             if (_driver.Bind(endpoint) != 0)
             {
-                Debug.LogError("Failed to bind to port 7777.");
+                _serverUIManager.PrintConsole("Failed to bind to port 7777.");
+                //Debug.LogError("Failed to bind to port 7777.");
                 return;
             }
             _driver.Listen();
@@ -51,7 +56,8 @@ namespace GAG.UDPLEDControlSystem
             while ((c = _driver.Accept()) != default)
             {
                 _connections.Add(c);
-                Debug.Log("Accepted a connection.");
+                _serverUIManager.PrintConsole("Accepted a connection.");
+                //Debug.Log("Accepted a connection.");
             }
 
             for (int i = 0; i < _connections.Length; i++)
@@ -63,8 +69,8 @@ namespace GAG.UDPLEDControlSystem
                     if (cmd == NetworkEvent.Type.Data)
                     {
                         uint number = stream.ReadUInt();
-
-                        Debug.Log($"Got {number} from a client, adding 2 to it.");
+                        _serverUIManager.PrintConsole($"Got {number} from a client, adding 2 to it.");
+                        //Debug.Log($"Got {number} from a client, adding 2 to it.");
                         number += 2;
 
                         _driver.BeginSend(NetworkPipeline.Null, _connections[i], out var writer);
@@ -73,7 +79,8 @@ namespace GAG.UDPLEDControlSystem
                     }
                     else if (cmd == NetworkEvent.Type.Disconnect)
                     {
-                        Debug.Log("Client disconnected from the server.");
+                        _serverUIManager.PrintConsole("Client disconnected from the server.");
+                        //Debug.Log("Client disconnected from the server.");
                         _connections[i] = default;
                         break;
                     }

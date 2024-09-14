@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/_UDP_LEDControlSystem/Scenes/UDP_LEDControlSystem.unity
+    path: Assets/_UDP_LEDControlSystem/Scenes/Server Scene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 0
+    path: Assets/_UDP_LEDControlSystem/Scenes/Client Scene.unity
+    guid: f13cbb2e44995924b85ae7fc089efd59
   m_configObjects: {}
