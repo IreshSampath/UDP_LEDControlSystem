@@ -1,14 +1,21 @@
+using System;
 using TMPro;
 using UnityEngine;
 
-public class UIManager : MonoBehaviour
+namespace GAG.UDPLEDControlSystem
 {
-    [SerializeField] TMP_Text _consolTxt;
-
-    public void PrintConsole(string msg)
+    public class UIManager : MonoBehaviour
     {
-        System.DateTime currentTime = System.DateTime.Now;
-        string prevMsg = _consolTxt.text;
-        _consolTxt.text = prevMsg + "\n" + currentTime.TimeOfDay + " : " + msg;
+        [SerializeField] TMP_Text _consolTxt;
+
+        public void PrintConsole(string msg)
+        {
+            //System.DateTime currentTime = System.DateTime.Now; 
+            DateTime now = DateTime.Now;
+            string currentTime = now.ToString("hh:mm:ss");
+            string prevMsg = _consolTxt.text;
+            //_consolTxt.text = prevMsg + "\n" + currentTime.TimeOfDay + " : " + msg;
+            _consolTxt.text = prevMsg + "\n" + currentTime + " : " + msg;
+        }
     }
 }

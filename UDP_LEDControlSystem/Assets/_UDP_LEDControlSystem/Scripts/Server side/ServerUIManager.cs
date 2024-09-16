@@ -1,4 +1,3 @@
-
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,7 +18,7 @@ namespace GAG.UDPLEDControlSystem
         List<GameObject> _lEDButtons;
         List<GameObject> _tempSelectedLEDButtons;
 
-        int _lEDButtonsCount = 100;
+        readonly int _lEDButtonsCount = 100;
         Color _selectedColor;
 
         // Call things before the first frame update
@@ -42,8 +41,6 @@ namespace GAG.UDPLEDControlSystem
         // Select LED buttons individually
         public void SelectLEDButton(GameObject selectedLEDButton)
         {
-            selectedLEDButton.GetComponent<Image>().enabled = true;
-
             foreach (GameObject tmpLEDButton in _tempSelectedLEDButtons)
             {
                 if (selectedLEDButton.name == tmpLEDButton.name)
@@ -52,6 +49,8 @@ namespace GAG.UDPLEDControlSystem
                     break;
                 }
             }
+            selectedLEDButton.transform.GetChild(0).GetComponent<Button>().enabled = false;
+            selectedLEDButton.GetComponent<Image>().enabled = true;
             _tempSelectedLEDButtons.Add(selectedLEDButton);
         }
 
@@ -62,6 +61,7 @@ namespace GAG.UDPLEDControlSystem
 
             foreach (GameObject lEDButton in _lEDButtons)
             {
+                lEDButton.transform.GetChild(0).GetComponent<Button>().enabled = false;
                 lEDButton.GetComponent<Image>().enabled = true;
                 _tempSelectedLEDButtons.Add(lEDButton);
             }
@@ -73,7 +73,7 @@ namespace GAG.UDPLEDControlSystem
             _selectedColor.r = _red.value;
             _selectedColor.g = _green.value;
             _selectedColor.b = _blue.value;
-            
+
             AddColor();
         }
 
@@ -82,7 +82,6 @@ namespace GAG.UDPLEDControlSystem
         {
             foreach (GameObject lEDButton in _tempSelectedLEDButtons)
             {
-                lEDButton.GetComponent<Image>().enabled = false;
                 lEDButton.GetComponent<Transform>().GetChild(0).GetComponent<Image>().color = _selectedColor;
             }
         }
@@ -98,12 +97,15 @@ namespace GAG.UDPLEDControlSystem
             {
                 lEDButton.GetComponent<Image>().enabled = false;
                 lEDButton.GetComponent<Transform>().GetChild(0).GetComponent<Image>().color = Color.white;
+                lEDButton.transform.GetChild(0).GetComponent<Button>().enabled = true;
             }
             _tempSelectedLEDButtons.Clear();
 
             foreach (GameObject lEDButton in SelectedLEDButtons)
             {
+                lEDButton.GetComponent<Image>().enabled = false;
                 lEDButton.GetComponent<Transform>().GetChild(0).GetComponent<Image>().color = Color.white;
+                lEDButton.transform.GetChild(0).GetComponent<Button>().enabled = true;
             }
             SelectedLEDButtons.Clear();
         }
@@ -113,7 +115,11 @@ namespace GAG.UDPLEDControlSystem
         {
             foreach (GameObject lEDButton in _tempSelectedLEDButtons)
             {
-                foreach(GameObject tmpLEDButton in SelectedLEDButtons)
+                lEDButton.GetComponent<Image>().enabled = false;
+                lEDButton.GetComponent<Transform>().GetChild(0).GetComponent<Image>().color = _selectedColor;
+                lEDButton.transform.GetChild(0).GetComponent<Button>().enabled = true;
+
+                foreach (GameObject tmpLEDButton in SelectedLEDButtons)
                 {
                     if(lEDButton.name == tmpLEDButton.name)
                     {
